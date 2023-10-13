@@ -58,4 +58,4 @@ This project is under the Becode license. Refer to @Nicolas1206/@Luciemtro for m
 
 We hope that Trellol will help you manage your projects more efficiently through the Kanban method. Feel free to reach out if you have any questions or issues. Happy project management!
 
-[Lucie](https://github.com/luciemtro) <==> [Nicolas](https://github.com/Nicolas1206)
+[Luciemtro](https://github.com/luciemtro) <==> [Nicolas1206](https://github.com/Nicolas1206)
