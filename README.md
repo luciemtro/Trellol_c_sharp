@@ -1,59 +1,60 @@
-# Trellol - Gestionnaire de Projet Kanban
+# Trellol - Kanban Project Management
 
-Trellol est un gestionnaire de projet qui utilise la méthode Kanban pour vous aider à organiser et gérer efficacement vos tâches. Ce README vous fournira un aperçu des fonctionnalités principales de Trellol et comment vous pouvez l'utiliser pour améliorer votre gestion de projet.
+Trellol is a project management tool that uses the Kanban method to help you efficiently organize and manage your tasks. This README will provide an overview of Trellol's key features and how you can use it to enhance your project management.
 
-## Table des matières
+## Table of Contents
 
-1. [Fonctionnalités](#fonctionnalités)
-2. [Utilisation](#utilisation)
-3. [Technologie](#technologie)
-4. [Contribuer](#contribuer)
-5. [Licence](#licence)
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Technology](#technology)
+6. [License](#license)
 
-## Fonctionnalités
+## Features
 
-Trellol offre les fonctionnalités suivantes :
+Trellol offers the following features:
 
-- **Système de Connexion** : Les utilisateurs peuvent se connecter et se déconnecter de leurs comptes pour accéder à leurs tableaux personnels.
+- **Login System**: Users can log in and log out of their accounts to access their personal boards.
 
-- **Gestion des Tableaux** : Les utilisateurs peuvent créer, modifier, et supprimer des tableaux pour organiser différents projets.
+- **Board Management**: Users can create, modify, and delete boards to organize different projects.
 
-- **Gestion des Listes** : À l'intérieur de chaque tableau, les utilisateurs peuvent créer, renommer, et supprimer des listes pour diviser les tâches en catégories.
+- **List Management**: Inside each board, users can create, rename, and delete lists to categorize tasks.
 
-- **Gestion des Cartes** : Les listes contiennent des cartes, chaque carte ayant un nom et une description. Les utilisateurs peuvent créer, éditer, et supprimer des cartes.
+- **Card Management**: Lists contain cards, each with a name and description. Users can create, edit, and delete cards.
 
-- **Drag and Drop** : Les utilisateurs peuvent facilement réorganiser leurs cartes en utilisant la fonctionnalité de glisser-déposer. Les positions des cartes sont mises à jour en temps réel grâce à des requêtes Ajax et sont sauvegardées dans la base de données.
+- **Drag and Drop**: Users can easily rearrange cards using the drag-and-drop feature. Card positions are updated in real-time through Ajax requests and are saved in the database.
 
-- **Tableaux Personnels** : Chaque utilisateur a son propre ensemble de tableaux. L'identifiant de l'utilisateur est associé à ses tableaux personnels, garantissant la confidentialité de leurs projets.
+- **Personal Boards**: Each user has their set of personal boards. The user's ID is associated with their personal boards, ensuring project confidentiality.
 
-## Utilisation
+## Installation
 
-1. Accédez à l'application depuis votre navigateur.
+To install Trellol on your server, clone this repo and use Update-database in the nuget package manager console.
 
-2. Créez un compte ou connectez-vous si vous en avez déjà un.
+## Usage
 
-3. Créez un tableau pour votre projet.
+1. Access the application from your web browser.
 
-4. À l'intérieur du tableau, créez des listes pour organiser vos tâches.
+2. Create an account or log in if you already have one.
 
-5. Ajoutez des cartes à chaque liste pour représenter vos tâches.
+3. Create a board for your project.
 
-6. Utilisez la fonctionnalité de glisser-déposer pour réorganiser les cartes.
+4. Inside the board, create lists to organize your tasks.
 
-7. Profitez de la méthode Kanban pour gérer efficacement votre projet !
+5. Add cards to each list to represent your tasks.
 
-## Technologie
+6. Use the drag-and-drop feature to rearrange cards.
 
-Trellol est construit en utilisant la technologie ASP.NET en MVC pour la gestion des données et la création de l'application web.
+7. Enjoy the Kanban method to efficiently manage your project!
 
-## Contribuer
+## Technology
 
-Si vous souhaitez contribuer à l'amélioration de Trellol, vous pouvez soumettre des problèmes, des demandes de fonctionnalités, ou des pull requests sur le référentiel GitHub du projet : [lien-vers-le-repo](https://github.com/votre-utilisateur/trellol).
+Trellol is built using ASP.NET technology in an MVC architecture for data management and web application creation.
 
-## Licence
+## License
 
-Ce projet est sous licence [Nom de la licence]. Consultez le fichier [LICENSE](LICENSE) pour plus d'informations.
+This project is under the Becode license. Refer to @Nicolas1206/@Luciemtro for more information.
 
 ---
 
-Nous espérons que Trellol vous aidera à gérer vos projets de manière plus efficace grâce à la méthode Kanban. N'hésitez pas à nous contacter en cas de questions ou de problèmes. Bonne gestion de projet !
+We hope that Trellol will help you manage your projects more efficiently through the Kanban method. Feel free to reach out if you have any questions or issues. Happy project management!
+(https://github.com/luciemtro "Lucie") <==> (https://github.com/Nicolas1206 "Nicolas"
