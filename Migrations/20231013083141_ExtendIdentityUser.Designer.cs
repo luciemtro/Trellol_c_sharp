@@ -11,9 +11,9 @@ using Trellol.Data;
 
 namespace Trellol.Migrations
 {
-    [DbContext(typeof(TrellolContext))]
-    [Migration("20231010133648_AddIdentity")]
-    partial class AddIdentity
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20231013083141_ExtendIdentityUser")]
+    partial class ExtendIdentityUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,11 @@ namespace Trellol.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -140,6 +145,10 @@ namespace Trellol.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -252,6 +261,9 @@ namespace Trellol.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -264,6 +276,8 @@ namespace Trellol.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ListId");
 
@@ -290,6 +304,16 @@ namespace Trellol.Migrations
                     b.HasIndex("BoardId");
 
                     b.ToTable("Lists");
+                });
+
+            modelBuilder.Entity("Trellol.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Pseudo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -345,6 +369,10 @@ namespace Trellol.Migrations
 
             modelBuilder.Entity("Trellol.Models.Card", b =>
                 {
+                    b.HasOne("Trellol.Models.ApplicationUser", null)
+                        .WithMany("Cards")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("Trellol.Models.List", "List")
                         .WithMany("Cards")
                         .HasForeignKey("ListId")
@@ -371,6 +399,11 @@ namespace Trellol.Migrations
                 });
 
             modelBuilder.Entity("Trellol.Models.List", b =>
+                {
+                    b.Navigation("Cards");
+                });
+
+            modelBuilder.Entity("Trellol.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cards");
                 });

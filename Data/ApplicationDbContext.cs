@@ -5,15 +5,16 @@ using Trellol.Models;
 
 namespace Trellol.Data
 {
-    public class TrellolContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public TrellolContext(DbContextOptions<TrellolContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
         public DbSet<Board> Boards { get; set; }
         public DbSet<List> Lists { get; set; }
         public DbSet<Card> Cards { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

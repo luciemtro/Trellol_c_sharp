@@ -10,7 +10,7 @@ using Trellol.Data;
 
 namespace Trellol.Migrations
 {
-    [DbContext(typeof(TrellolContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20231004123217_AddModels")]
     partial class AddModels
     {

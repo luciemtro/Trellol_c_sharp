@@ -10,12 +10,11 @@ namespace Trellol.Controllers
     public class BoardController : Controller
     {   
         // Récupération de la DB dans le controller
-        private readonly TrellolContext _db;
-        public BoardController(TrellolContext db)
-        {
+        private readonly ApplicationDbContext _db;
+        public BoardController(ApplicationDbContext db)
+        {   
             _db = db;
         }
-
 #region Board Actions
 
         // Action sur l'index de Board
@@ -152,6 +151,7 @@ namespace Trellol.Controllers
             return Json(new { success = true });
         }
 #endregion
+
 #region Action Card
         [HttpPost]
         public IActionResult AddCard(int listId, string cardName)
@@ -224,7 +224,7 @@ namespace Trellol.Controllers
 
         #endregion
 
-        #region Drag and Drop
+#region Drag and Drop
         [HttpGet]
         public IActionResult Hello()
         {
@@ -250,7 +250,5 @@ namespace Trellol.Controllers
             }
 
             #endregion
-
-
-        }
+    }
 }

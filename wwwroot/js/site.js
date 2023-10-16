@@ -66,3 +66,9 @@ function updateCardList(listId, cardId, list, cardDragged) {
 
 
 
+
+
+
+
+
+
