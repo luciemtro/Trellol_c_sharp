@@ -1,16 +1,24 @@
-﻿@if(TempData["success"] != null)
+﻿<!-- Checking if there is a success message in TempData -->
+@if (TempData["success"] != null)
 {
+    <!-- Including jQuery and Toastr scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script type="text/javascript">
-        toastr.success('@TempData["success"]'); 
-    </script>
 
+    <!-- Displaying a success notification using Toastr -->
+    <script type="text/javascript">
+        toastr.success('@TempData["success"]');
+    </script>
 }
-@if (TempData["error"] != null) 
+
+<!-- Checking if there is an error message in TempData -->
+@if (TempData["error"] != null)
 {
+    <!-- Including jQuery and Toastr scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <!-- Displaying an error notification using Toastr -->
     <script type="text/javascript">
         toastr.error('@TempData["error"]');
     </script>

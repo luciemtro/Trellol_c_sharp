@@ -1,23 +1,35 @@
-﻿@model Board
+﻿<!-- This Razor view is designed to create a new board. -->
+@model Board
+
+<!-- Centered container using flexbox for a clean layout. -->
 <div style="display:flex;justify-content:center">
     <form method="post">
+        <!-- Stylish border and padding for the form. -->
         <div class="border p-3 mt-4">
+            <!-- Section for the title of the form. -->
             <div class="row pb-2">
                 <h2>Create new board</h2>
+                <!-- Horizontal line for separation. -->
                 </hr>
             </div>
+            <!-- Validation summary for model errors. -->
             <div asp-validation-summary="ModelOnly"></div>
+
+            <!-- Input field for the board name with associated label and validation messages. -->
             <div class="mb-3 row p-1">
                 <label asp-for="Name" style="color:black" class="p-0"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-        
+
+            <!-- Buttons section with flex layout. -->
             <div class="row" style="display:flex; flex-direction:column;">
+                <!-- Button to submit the form and create the board. -->
                 <div class="col-6 col-md-3">
                     <button type="submit" class="btn btn-success form-control" style="width:190px;margin-bottom:10px;">Create</button>
                 </div>
 
+                <!-- Button to go back to the home page. -->
                 <div class="col-6 col-md-3">
                     <a asp-controller="Board" asp-action="Index" class="btn btn-warning form-control" style="width:190px;">Back to Home</a>
                 </div>
@@ -26,6 +38,7 @@
     </form>
 </div>
 
+<!-- Section for including validation scripts. -->
 @section Scripts{
     @{
         <partial name="_ValidationScriptsPartial" />

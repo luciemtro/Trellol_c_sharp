@@ -1,45 +1,70 @@
 ﻿@model Trellol.Models.Board
 @using Trellol.Util
 
+<!-- Including jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Header section displaying the board name -->
 <div class="second-nav p-3" data-bs-theme="light">
     <h1 class="p-3">@Model.Name.FirstCharToUpper()</h1>
-
 </div>
+
+<!-- Main container for lists and cards -->
 <div class="container_list p-3">
+
+    <!-- Looping through each list in our board -->
     @foreach (var list in Model.Lists)
     {
+        <!-- Section for a specific list with its unique identifier -->
         <section class="list" id="list_@list.Id" draggable="true">
+
+            <!-- Top part of the list, including its name and delete option -->
             <div class="toplist">
                 <h6>@list.Name.ToUpper()</h6>
                 <a onclick="deleteList(@list.Id)"><i class="bi bi-x-lg" style="color:black; font-weight:bold"></i></a>
-            </div>            
-            
+            </div>
+
+            <!-- Input field to add a new card to our list -->
             <input type="text" class="form-control form-control-sm" placeholder="Add Card" id="cardName_@list.Id" name="cardName" required />
+
+            <!-- Button to add a new card to our list -->
             <a class="btn-add" type="button" onclick="addCard(@list.Id)">+</a>
+
+            <!-- Container for displaying cards in our list -->
             <div class="cards">
+                <!-- Looping through each card in our list -->
                 @foreach (var card in list.Cards)
                 {
+                    <!-- Section for a specific card with its unique identifier -->
                     <section class="party_card card" id="card_@card.Id" draggable="true">
 
+                        <!-- Container for the card name and delete option -->
                         <div class="container_cardname">
                             <h6 class="name_card">@card.Name.FirstCharToUpper()</h6>
                             <a onclick="deleteCard(@card.Id)"><i class="bi bi-trash3" style="color:black"></i></a>
                         </div>
 
+                        <!-- Container for icons and card description -->
                         <div class="container_icons_card">
+                            <!-- Displaying the card description if available -->
                             @if (card.Description != "")
                             {
                                 <p class="displayDesc">
                                     @card.Description
                                 </p>
                             }
+                            <!-- Button to toggle the visibility of the card description -->
                             <a id="toggleDescriptionBtn" onclick="toggleDescription(@card.Id)"><i class="bi bi-caret-down"></i></a>
                         </div>
+
+                        <!-- Section for editing the card description -->
                         <section class="desc">
+                            <!-- Container for typing the card description -->
                             <div class="container_saisie">
-                                <textarea id="description_@card.Id" name="description" class="saisie form-control p-0" placeholder="Add your description.."></textarea>
+                                <textarea id="description_@card.Id" name="description" class="saisie form-control p-0 description" placeholder="Add your description.."></textarea>
                             </div>
+
+                            <!-- Container for adding the card description -->
                             <div class="container_add">
                                 <a class="btn btn-outline-light btn-sm" id="addButton_@(card.Id)" onclick="addDescriptionCard(@card.Id)">Add</a>
                             </div>
@@ -49,69 +74,85 @@
             </div> <!-- This closing div tag was missing -->
         </section>
     }
+
+    <!-- Section for adding a new list to our board -->
     <section class="container_form">
         <form id="addListForm">
             <input class="form-control-sm form-control" type="text" placeholder="Add List" id="listName" name="listName" required>
 
+            <!-- Button to add a new list to our board -->
             <a class="btn-add" type="button" placeholder="Add List" onclick="addList()">+</a>
         </form>
     </section>
 </div>
+
+<!-- Script section for handling various board actions -->
 <script>
+    // Function to add a new list to our board
     function addList() {
         var listName = $("#listName").val();
         var boardId = @Model.Id;
 
+        // Making a POST request to add a new list
         $.post('@Url.Action("AddList", "Board")', { boardId: boardId, listName: listName }, function (result) {
             if (result.success) {
-                // Met à jour la page après l'ajout réussi
+                // Refreshing the page after a successful addition
                 location.reload();
             }
         });
     }
+
+    // Function to add a new card to a specific list
     function addCard(listId) {
         var cardName = $("#cardName_" + listId).val();
         var boardId = @Model.Id;
 
+        // Making a POST request to add a new card
         $.post('@Url.Action("AddCard", "Board")', { listId: listId, cardName: cardName }, function (result) {
             if (result.success) {
+                // Refreshing the page after a successful addition
                 location.reload();
             }
         });
     }
+
+    // Function to delete a specific list
     function deleteList(listId) {
         if (confirm("Are you sure you want to delete this list?")) {
+            // Making a POST request to delete a list
             $.post('@Url.Action("DeleteList", "Board")', { id: listId }, function (result) {
                 if (result.success) {
+                    // Refreshing the page after a successful deletion
                     location.reload();
                 }
             });
         }
     }
+
+    // Function to delete a specific card
     function deleteCard(cardId) {
         if (confirm("Are you sure you want to delete this card?")) {
+            // Making a POST request to delete a card
             $.post('@Url.Action("DeleteCard", "Board")', { id: cardId }, function (result) {
                 if (result.success) {
+                    // Refreshing the page after a successful deletion
                     location.reload();
                 }
             });
         }
     }
+
+    // Function to add or edit the description of a specific card
     function addDescriptionCard(cardId) {
         var description = $("#description_" + cardId).val();
 
+        // Making a POST request to add or edit the card description
         $.post('@Url.Action("EditCardDescription", "Board")', { cardId: cardId, description: description }, function (result) {
             if (result.success) {
+                // Refreshing the page after a successful addition or edit
                 location.reload();
             }
         });
     }
-    function toggleDescription(cardId) {
-        var description = $("#description_" + cardId);
-        var addButton = $("#addButton_" + cardId);
 
-        description.slideToggle(function () {
-            addButton.toggle(description.is(":visible"));
-        });
-    }
 </script>

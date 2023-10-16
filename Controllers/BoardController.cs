@@ -7,50 +7,55 @@ using Trellol.Models;
 
 namespace Trellol.Controllers
 {
+    // Controller responsible for handling Board-related actions
     public class BoardController : Controller
-    {   
-        // Récupération de la DB dans le controller
+    {
+        // Retrieving the database context in the controller
         private readonly ApplicationDbContext _db;
         public BoardController(ApplicationDbContext db)
-        {   
+        {
             _db = db;
         }
-#region Board Actions
 
-        // Action sur l'index de Board
+        #region Board Actions
+
+        // Action for the index page of Board
         public IActionResult Index()
         {
+            // Fetching the list of boards from the database, or an empty list if null
             List<Board> objBoardList = _db.Boards?.ToList() ?? new List<Board>();
             return View(objBoardList);
         }
 
-        // Action sur la page Création de Board
-        public IActionResult Create() 
+        // Action for the Create page of Board
+        public IActionResult Create()
         {
             return View();
         }
 
-        // Action sur la création des Boards, méthode POST, on lui donne un obj(un board)
+        // Action for creating boards, HTTP POST method, taking a board object as a parameter
         [HttpPost]
         public IActionResult Create(Board obj)
-        {   //ModelState.IsValid est préfait
+        {
+            // Checking if the model state is valid
             if (ModelState.IsValid)
-            {   
+            {
+                // Adding the board to the database and saving changes
                 _db.Boards.Add(obj);
                 _db.SaveChanges();
-                // Sert à diffuser un message temporaire (Voir TostR et _Notification)
-                TempData["success"] = "Board created successfully !";
-                // Si tout est réussi, on retourne à l'index
+                // Displaying a temporary success message (See Toastr and _Notification)
+                TempData["success"] = "Board created successfully!";
+                // If everything is successful, redirect to the index
                 return RedirectToAction("Index");
             }
-            // Si ça a échoué, on reload la même page
+            // If it fails, reload the same page
             return View();
         }
 
-        // Action sur la suppression des boards, on lui donne l'id du board comme para
+        // Action for deleting boards, taking the board id as a parameter
         public IActionResult Delete(int? id)
-        {   
-            // Si l'id n'est pas trouvé, est null, on retourne la page not found
+        {
+            // If the id is not found or null, return the not found page
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -66,43 +71,42 @@ namespace Trellol.Controllers
             return View(boardFromDb);
         }
 
-        // Cette fois, on agit sur la DB avec la suppression
+        // This time, we perform the actual deletion in the database
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            // On dit que le board est égale à l'id trouvé dans la table board
+            // Retrieving the board based on the id from the board table
             Board obj = _db.Boards.Find(id);
-            // On test si l'obj (Le board) a été trouvé, si non, on renvoie not found
+            // Checking if the object (board) is found, if not, return not found
             if (obj == null)
             {
                 return NotFound();
             }
-            // On utilise la méthode remove en lui donnant l'obj (Le board), on sauvegarde la DB
-
+            // Using the remove method, giving it the object (board), and saving the database
             _db.Boards.Remove(obj);
             _db.SaveChanges();
-            TempData["success"] = "Board deleted successfully !";
-            // Retourne une réponse JSON indiquant le succès de la suppression
+            TempData["success"] = "Board deleted successfully!";
+            // Returning a JSON response indicating the success of the deletion
             return Json(new { success = true });
         }
         #endregion
 
-#region List Actions
-        // Action sur SingleBoard
+        #region List Actions
+        // Action for SingleBoard
         public IActionResult SingleBoard(int id)
         {
-            // Je récupère le tableau via son Id ainsi que les listes reliées à mon tableau
+            // Retrieving the board and related lists and cards based on the Id
             Board board = _db.Boards.Include(b => b.Lists).ThenInclude(l => l.Cards).FirstOrDefault(b => b.Id == id);
-            // Gère le cas où aucun tableau avec cet ID n'est trouvé
+            // Handling the case where no board with this ID is found
             if (board == null)
             {
                 return NotFound();
             }
-            // Si il n'y a pas d'erreur, je retourne la vue à l'utilisateur
+            // If there are no errors, return the view to the user
             return View(board);
         }
 
-        // Méthode post pour ajouter des listes
+        // HTTP POST method for adding lists
         [HttpPost]
         public IActionResult AddList(int boardId, string listName)
         {
@@ -124,8 +128,8 @@ namespace Trellol.Controllers
             {
                 board.Lists.Add(newList);
                 _db.SaveChanges();
-                TempData["success"] = "List created successfully !";
-                // Retourne une réponse JSON indiquant le succès
+                TempData["success"] = "List created successfully!";
+                // Returning a JSON response indicating success
                 return Json(new { success = true });
             }
 
@@ -146,13 +150,13 @@ namespace Trellol.Controllers
 
             _db.Lists.Remove(list);
             _db.SaveChanges();
-            TempData["success"] = "List deleted successfully !";
-            // Retourne une réponse JSON indiquant le succès de la suppression
+            TempData["success"] = "List deleted successfully!";
+            // Returning a JSON response indicating the success of the deletion
             return Json(new { success = true });
         }
-#endregion
+        #endregion
 
-#region Action Card
+        #region Card Actions
         [HttpPost]
         public IActionResult AddCard(int listId, string cardName)
         {
@@ -174,8 +178,8 @@ namespace Trellol.Controllers
             {
                 list.Cards.Add(newCard);
                 _db.SaveChanges();
-                TempData["success"] = "Card created successfully !";
-                // Retourne une réponse JSON indiquant le succès
+                TempData["success"] = "Card created successfully!";
+                // Returning a JSON response indicating success
                 return Json(new { success = true });
             }
 
@@ -196,8 +200,8 @@ namespace Trellol.Controllers
 
             _db.Cards.Remove(card);
             _db.SaveChanges();
-            TempData["success"] = "Card deleted successfully !";
-            // Retourne une réponse JSON indiquant le succès de la suppression
+            TempData["success"] = "Card deleted successfully!";
+            // Returning a JSON response indicating the success of the deletion
             return Json(new { success = true });
         }
 
@@ -210,21 +214,20 @@ namespace Trellol.Controllers
             {
                 return NotFound();
             }
+            if (ModelState.IsValid)
+            {
+                card.Description = description;
 
-            card.Description = description;
-
-            
-            
                 _db.SaveChanges();
-                TempData["success"] = "Description created successfully !";
+                TempData["success"] = "Description created successfully!";
 
                 return Json(new { success = true });
-
+            }
+            return Json(new { success = false });
         }
-
         #endregion
 
-#region Drag and Drop
+        #region Drag and Drop
         [HttpGet]
         public IActionResult Hello()
         {
@@ -234,21 +237,20 @@ namespace Trellol.Controllers
         [HttpPut]
         public IActionResult UpdateCardList(int listId, int cardId)
         {
-                Card card = _db.Cards.Find(cardId);
-               
-                if (card == null)
-                {
-                    return NotFound();
-                }
+            Card card = _db.Cards.Find(cardId);
 
-                card.ListId = listId;
-
-                _db.SaveChanges();
-                TempData["success"] = "Card update position !";
-
-                return Json(new { success = true });
+            if (card == null)
+            {
+                return NotFound();
             }
 
-            #endregion
+            card.ListId = listId;
+
+            _db.SaveChanges();
+            TempData["success"] = "Card update position !";
+
+            return Json(new { success = true });
+        }
+        #endregion
     }
 }
